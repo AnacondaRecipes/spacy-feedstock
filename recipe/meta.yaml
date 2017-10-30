@@ -14,38 +14,34 @@ source:
 build:
   number: 1
   script: python setup.py install -q --single-version-externally-managed --record=record.txt
-  skip: True  # [not x86_64]
   features:
-    - vc9   # [win and py27]
-    - vc14  # [win and py>=35]
+    - vc{{ vc }}   # [win]
 
 requirements:
-  build:
-    - toolchain   # [unix]
+  host:
     - msinttypes  # [win and py27]
     - python
     - setuptools
-    - numpy x.x
-    - numpy >=1.7
-    - gcc        # [linux]
+    - numpy
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
   run:
     - python
-    - libgcc     # [linux]
-    - numpy x.x
-    - numpy >=1.7
+    - {{ pin_compatible('numpy') }}
     - murmurhash >=0.26,<0.27
     - cymem >=1.30,<1.32.0
     - preshed >=1.0.0,<2.0.0
     - thinc >=6.5.0,<6.6.0
-    - plac >=0.9.6,<1.0.0
+    - plac <1.0.0,>=0.9.6
+    - pip >=9.0.0,<10.0.0
     - six
-    - pathlib  # [py2k]
+    - pathlib
     - ujson >=1.35
     - dill >=0.2,<0.3
-    - requests >=2.11.0,<3.0.0
+    - requests >=2.13.0,<3.0.0
     - regex >=2017.4.1,<2017.12.1
     - ftfy >=4.4.2,<5.0.0
-    - pip
 
 test:
   requires:
