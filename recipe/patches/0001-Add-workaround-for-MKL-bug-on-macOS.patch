@@ -1,0 +1,28 @@
+From 3b7d6dcfea0674410793cd0b0b857f537d2582ab Mon Sep 17 00:00:00 2001
+From: Nehal J Wani <nehaljw.kkd1@gmail.com>
+Date: Tue, 9 Jan 2018 12:16:15 -0600
+Subject: [PATCH] Add workaround for MKL bug on macOS
+
+Spacy depends on plac, which tries to import tk, which ends up loading the
+accelerate framework and makes MKL ignore it's own libraries.
+xref: https://github.com/ContinuumIO/anaconda-issues/issues/8070
+---
+ spacy/__init__.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/spacy/__init__.py b/spacy/__init__.py
+index 36ff2dd1..8537004c 100644
+--- a/spacy/__init__.py
++++ b/spacy/__init__.py
+@@ -1,6 +1,8 @@
+ # coding: utf8
+ from __future__ import unicode_literals
+ 
++import numpy
++
+ from .cli.info import info as cli_info
+ from .glossary import explain
+ from .about import __version__
+-- 
+2.14.1
+

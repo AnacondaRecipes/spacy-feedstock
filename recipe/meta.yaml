@@ -1,6 +1,6 @@
 {% set name = "spacy" %}
-{% set version = "2.0.4" %}
-{% set sha256sum = "89f6d7aebc63e4b917a804fdc7d786e46827d859e9476b72faf5a559846d1b20" %}
+{% set version = "2.0.5" %}
+{% set sha256sum = "4a47371b50232a1fa05f50cb83da4cc04a857dd0941e5d4f90fa8778e8c00e15" %}
 package:
   name: {{ name }}
   version: {{ version }}
@@ -11,48 +11,42 @@ source:
   sha256: {{ sha256sum }}
   patches:
     - patches/0001-Use-generic-optimizations.patch  # [linux]
+    # Remove this when MKL 2018 update 2 is out.
+    # xref: https://github.com/ContinuumIO/anaconda-issues/issues/8070
+    - patches/0001-Add-workaround-for-MKL-bug-on-macOS.patch  # [osx]
 
 build:
   number: 0
-  script: python setup.py install -q --single-version-externally-managed --record=record.txt
-  skip: True  # [not x86_64]
-  features:
-    - vc9   # [win and py27]
-    - vc14  # [win and py>=35]
+  script: python setup.py install --single-version-externally-managed --record=record.txt
 
 requirements:
-  build:
-    - toolchain   # [unix]
-    - msinttypes  # [win and py27]
+  host:
+    - msinttypes  # [win and vc<14]
     - python
     - setuptools
-    # Pin numpy at build time with the minimum version available.
-    - numpy 1.8.*   # [not (win and (py35 or py36))]
-    - numpy 1.9.*   # [win and py35]
-    - numpy 1.11.*  # [win and py36]
-    - gcc        # [linux]
+    - numpy
+
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+
   run:
     - python
-    - libgcc     # [linux]
-    - numpy >=1.7
-    - numpy >=1.8   # [not (win and (py35 or py36))]
-    - numpy >=1.9   # [win and py35]
-    - numpy >=1.11  # [win and py36]
-    - murmurhash >=0.28,<0.30
+    - {{ pin_compatible('numpy') }}
+    - murmurhash >=0.28,<0.29
     - cymem >=1.30,<1.32.0
     - preshed >=1.0.0,<2.0.0
-    - thinc >=6.10.0,<6.11.0
+    - thinc >=6.10.1,<6.11.0
     - plac >=0.9.6,<1.0.0
-    - six >=1.10.0,<2.0.0
+    - six
     - pathlib  # [py2k]
     - ujson >=1.35
     - dill >=0.2,<0.3
-    - requests >=2.11.0,<3.0.0
-    - regex >=2017.4.1,<2017.12.1
+    - requests >=2.13.0,<3.0.0
+    - regex ==2017.4.5
     - ftfy >=4.4.2,<5.0.0
-    - pip
-    - msgpack-numpy >=0.4.1,<0.5.0
-    - msgpack-python >=0.4.8,<0.5.0
+    - msgpack-numpy ==0.4.1
+    - msgpack-python
 
 test:
   requires:
