@@ -1,6 +1,6 @@
 {% set name = "spacy" %}
-{% set version = "2.0.5" %}
-{% set sha256sum = "4a47371b50232a1fa05f50cb83da4cc04a857dd0941e5d4f90fa8778e8c00e15" %}
+{% set version = "2.0.9" %}
+{% set sha256sum = "45d7ba0903a9cc7901cc4babf27515b1b7c7567658ba39ce5dc77c0fa98313c6" %}
 package:
   name: {{ name }}
   version: {{ version }}
@@ -10,7 +10,6 @@ source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256sum }}
   patches:
-    - patches/0001-Use-generic-optimizations.patch  # [linux]
     # Remove this when MKL 2018 update 2 is out.
     # xref: https://github.com/ContinuumIO/anaconda-issues/issues/8070
     - patches/0001-Add-workaround-for-MKL-bug-on-macOS.patch  # [osx]
@@ -43,10 +42,10 @@ requirements:
     - ujson >=1.35
     - dill >=0.2,<0.3
     - requests >=2.13.0,<3.0.0
-    - regex ==2017.4.5
+    - regex >=2017.4.0,<2017.12.1
     - ftfy >=4.4.2,<5.0.0
-    - msgpack-numpy ==0.4.1
-    - msgpack-python
+    - msgpack-numpy >=0.4.1,<0.5.0
+    - msgpack-python >=0.4.8,<0.5.0
 
 test:
   requires:
