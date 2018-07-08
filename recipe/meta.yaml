@@ -42,7 +42,7 @@ requirements:
     - thinc >=6.10.1,<6.12.0
     - plac >=0.9.6,<1.0.0
     - six
-    - pathlib  # [py2k]
+    - pathlib2  # [py2k]
     - ujson >=1.35
     - dill >=0.2,<0.3
     - requests >=2.13.0,<3.0.0
