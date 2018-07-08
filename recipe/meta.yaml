@@ -16,8 +16,11 @@ source:
     - patches/0001-Add-workaround-for-MKL-bug-on-macOS.patch  # [osx]
 
 build:
-  number: 1
-  script: python setup.py install --single-version-externally-managed --record=record.txt
+  number: 2
+  script:
+    - rm spacy/tests/regression/test_issue957.py      # [not win]
+    - del /q spacy\tests\regression\test_issue957.py  # [win]
+    - {{PYTHON}} setup.py install --single-version-externally-managed --record=record.txt
 
 requirements:
   host:
@@ -44,13 +47,13 @@ requirements:
     - dill >=0.2,<0.3
     - requests >=2.13.0,<3.0.0
     - regex >=2017.4.0,<=2018.6.21
-    - ftfy >=4.4.2,<5.4.2
     - msgpack-numpy >=0.4.1,<0.5.0
     - msgpack-python >=0.4.8,<0.5.7
 
 test:
   requires:
     - pytest
+    - pytest-timeout
     - mock
   imports:
     - spacy
