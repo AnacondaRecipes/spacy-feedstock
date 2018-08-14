@@ -46,7 +46,7 @@ requirements:
     - ujson >=1.35
     - dill >=0.2,<0.3
     - requests >=2.13.0,<3.0.0
-    - regex >=2017.4.0,<=2018.6.21
+    - regex >=2017.4.0,<=2018.7.11
     - msgpack-numpy >=0.4.1,<0.5.0
     - msgpack-python >=0.4.8,<0.5.7
 
