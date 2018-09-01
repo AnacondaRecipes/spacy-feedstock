@@ -1,6 +1,6 @@
 {% set name = "spacy" %}
-{% set version = "2.0.11" %}
-{% set sha256sum = "cddb06e7965222e4339eb59d2258db8dadab19ef8b0a1a44a2d33f94935ba421" %}
+{% set version = "2.0.12" %}
+{% set sha256sum = "b220ebee412c19613c26b2c1870b60473834bd686cec49553ce5f184164d3359" %}
 
 package:
   name: {{ name }}
@@ -10,14 +10,13 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256sum }}
-  patches:
-    # Remove this when MKL 2018 update 2 is out.
-    # xref: https://github.com/ContinuumIO/anaconda-issues/issues/8070
-    - patches/0001-Add-workaround-for-MKL-bug-on-macOS.patch  # [osx]
 
 build:
-  number: 2
+  number: 0
   script:
+    # xref: https://github.com/explosion/spaCy/issues/1592#issuecomment-360889011
+    - mv $SRC_DIR/include/numpy $SRC_DIR/include/numpy.bak                                             # [ppc64le]
+    - ln -s $PREFIX/lib/python${PY_VER}/site-packages/numpy/core/include/numpy $SRC_DIR/include/numpy  # [ppc64le]
     - rm spacy/tests/regression/test_issue957.py      # [not win]
     - del /q spacy\tests\regression\test_issue957.py  # [win]
     - {{PYTHON}} setup.py install --single-version-externally-managed --record=record.txt
@@ -39,7 +38,7 @@ requirements:
     - murmurhash >=0.28,<0.29
     - cymem >=1.30,<1.32.0
     - preshed >=1.0.0,<2.0.0
-    - thinc >=6.10.1,<6.12.0
+    - thinc >=6.10.3,<6.11.0
     - plac >=0.9.6,<1.0.0
     - six
     - pathlib2  # [py2k]
