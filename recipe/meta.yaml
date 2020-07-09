@@ -1,6 +1,6 @@
 {% set name = "spacy" %}
-{% set version = "2.0.16" %}
-{% set sha256sum = "41de9353994aa782deb66a14742219b205ecd59fe11290ce39c4b914d05e0fbe" %}
+{% set version = "2.3.1" %}
+{% set sha256sum = "8f0dc4f7b995550302d233ebb723b5ddb343c7d24abe1276fc3488afef97c6bf" %}
 
 package:
   name: {{ name }}
@@ -17,44 +17,42 @@ build:
     # xref: https://github.com/explosion/spaCy/issues/1592#issuecomment-360889011
     - mv $SRC_DIR/include/numpy $SRC_DIR/include/numpy.bak                                             # [ppc64le]
     - ln -s $PREFIX/lib/python${PY_VER}/site-packages/numpy/core/include/numpy $SRC_DIR/include/numpy  # [ppc64le]
-    - rm spacy/tests/regression/test_issue957.py       # [not win]
-    - rm spacy/tests/regression/test_issue2626.py      # [not win]
-    - del /q spacy\tests\regression\test_issue957.py   # [win]
-    - del /q spacy\tests\regression\test_issue2626.py  # [win]
-    - {{PYTHON}} setup.py install --single-version-externally-managed --record=record.txt
+    - {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
 
 requirements:
   host:
-    - msinttypes  # [win and vc<14]
     - python
-    - setuptools
-    - numpy
-    # setup.py constrains wheel via setup_requires
-    - wheel >=0.32.0,<0.33.0
+    - pip
+    - wheel
+    - numpy 1.16.*
+    - cython >=0.25
+    - cymem >=2.0.2,<2.1.0
+    - preshed >=3.0.2,<3.1.0
+    - murmurhash >=0.28.0,<1.1.0
+    - thinc ==7.4.1
 
   build:
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
 
   run:
     - python
     - {{ pin_compatible('numpy') }}
-    - msgpack-numpy <0.4.4
     - murmurhash >=0.28,<1.1.0
     - cymem >=2.0.2,<2.1.0
-    - preshed >=2.0.1,<2.1.0
-    - thinc >=6.12.0,<6.13.0
+    - preshed >=3.0.2,<3.1.0
+    - thinc ==7.4.1
+    - catalogue >=0.0.7,<1.1.0
     - plac >=0.9.6,<1.0.0
-    - ujson >=1.35
-    - dill >=0.2,<0.3
-    - regex >=2018.01.10
+    - srsly >=1.0.2,<1.1.0
+    - wasabi >=0.4.0,<1.1.0
+    - jsonschema>=2.6.0,<3.1.0
     - requests >=2.13.0,<3.0.0
-    - pathlib2  # [py2k]
+    - pathlib2 >=3.0.2,<3.1.0  # [py2k]
+    - tqdm>=4.38.0,<5.0.0
 
 test:
   requires:
     - pytest
-    - pytest-timeout
     - mock
   imports:
     - spacy
