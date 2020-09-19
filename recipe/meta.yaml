@@ -18,6 +18,7 @@ build:
     - mv $SRC_DIR/include/numpy $SRC_DIR/include/numpy.bak                                             # [ppc64le]
     - ln -s $PREFIX/lib/python${PY_VER}/site-packages/numpy/core/include/numpy $SRC_DIR/include/numpy  # [ppc64le]
     - {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+  skip: True  # [(win32 or linux-ppc64le)]
 
 requirements:
   host:
