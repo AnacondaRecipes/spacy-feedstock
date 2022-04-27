@@ -1,6 +1,6 @@
 {% set name = "spacy" %}
-{% set version = "3.2.1" %}
-{% set sha256sum = "f6ebac511627740a8ca2b117b91ef5515c8f0b2fb117a69ebe01d010dd4fc53c" %}
+{% set version = "3.2.4" %}
+{% set sha256sum = "3e4c6f298d54044582daca1142b082ee38831bb3d7bb931d2ee601e8b8dce64f" %}
 
 package:
   name: {{ name }}
@@ -11,29 +11,30 @@ source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256sum }}
 
-
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
   # no s390x support
   skip: True  # [linux and s390x]
+  entry_points:
+    - spacy = spacy.cli:setup_cli
+
 requirements:
   build:
     - {{ compiler('cxx') }}
   host:
-    - pip
-    - setuptools
-    - wheel
     - python
-    - numpy
-    - setuptools
-    - wheel
-    - cython >=0.25,<3.0
-    - murmurhash >=0.28.0,<1.1.0
     - cymem >=2.0.2,<2.1.0
-    - preshed >=3.0.2,<3.1.0
-    - thinc >=8.0.12,<8.1.0
+    - cython >=0.25,<3.0
     - cython-blis >=0.4.0,<0.8.0
+    - murmurhash >=0.28.0,<1.1.0
+    - numpy
+    - pathy
+    - pip
+    - preshed >=3.0.2,<3.1.0
+    - setuptools
+    - thinc >=8.0.12,<8.1.0
+    - wheel
   run:
     - python
     # Our libraries
@@ -48,7 +49,9 @@ requirements:
     - catalogue >=2.0.6,<2.1.0
     - spacy-loggers >=1.0.0,<2.0.0
     # Exclude typer with unpinned click
-    - typer >=0.3.2,<0.5.0
+    - typer >=0.3.0,<0.5.0
+    # Exclude newer click due to typer issues
+    - click <8.1.0
     - pathy >=0.3.5
     # Third-party dependencies
     - tqdm >=4.38.0,<5.0.0
@@ -64,6 +67,7 @@ requirements:
 
 test:
   requires:
+    - pip
     - pytest
     - pytest-timeout
     - mock
@@ -71,11 +75,13 @@ test:
   imports:
     - spacy
   commands:
+    - pip check
     - python -m pytest --tb=native --pyargs {{ name }}
 
 about:
   home: https://spacy.io/
   license: MIT
+  license_family: MIT
   license_file: LICENSE
   summary: Industrial-strength Natural Language Processing
   description: |
