@@ -15,7 +15,7 @@ build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
   # no s390x support
-  skip: True  # [linux and s390x]
+  skip: True  # [(linux and s390x) or win32]
   entry_points:
     - spacy = spacy.cli:setup_cli
 
@@ -57,7 +57,7 @@ requirements:
     - tqdm >=4.38.0,<5.0.0
     - {{ pin_compatible('numpy') }}
     - requests >=2.13.0,<3.0.0
-    - pydantic >=1.7.4,!=1.8,!=1.8.1,<1.9.0
+    - pydantic >=1.7.4,!=1.8,!=1.8.1
     - jinja2
     - langcodes >=3.2.0,<4.0.0
     # Official Python utilities
