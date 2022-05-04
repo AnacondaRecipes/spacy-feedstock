@@ -67,7 +67,7 @@ requirements:
 
 test:
   requires:
-    - pip
+    #- pip
     - pytest
     - pytest-timeout
     - mock
