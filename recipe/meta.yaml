@@ -1,6 +1,6 @@
 {% set name = "spacy" %}
-{% set version = "3.3.0" %}
-{% set sha256sum = "c49d50fbe3715adc5741419367b39a468d2556648422f10b6fc4edf38eae2cb3" %}
+{% set version = "3.3.1" %}
+{% set sha256sum = "7f87dbdb104d851ae6ba5fd3a76a2e14e22e048135903e98baf08571a3aa81c0" %}
 
 package:
   name: {{ name }}
@@ -37,7 +37,7 @@ requirements:
     - wheel
   run:
     - python
-    # Our libraries
+    # Spacy libraries
     - spacy-legacy >=3.0.9,<3.1.0
     - murmurhash >=0.28.0,<1.1.0
     - cymem >=2.0.2,<2.1.0
@@ -63,7 +63,7 @@ requirements:
     # Official Python utilities
     - setuptools
     - packaging >=20.0
-    - typing_extensions >=3.7.4,<4.0.0.0  # [py<=37]
+    - typing_extensions >=3.7.4.1,<4.2.0  # [py<=37]
 
 test:
   requires:
