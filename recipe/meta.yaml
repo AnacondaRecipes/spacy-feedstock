@@ -63,7 +63,7 @@ requirements:
     # Official Python utilities
     - setuptools
     - packaging >=20.0
-    - typing_extensions >=3.7.4,<4.0.0.0  # [py<=37]
+    - typing_extensions >=3.7.4.1,<4.2.0  # [py<=37]
 
 test:
   requires:
