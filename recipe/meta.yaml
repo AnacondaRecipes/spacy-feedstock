@@ -10,7 +10,7 @@ source:
   sha256: 7f87dbdb104d851ae6ba5fd3a76a2e14e22e048135903e98baf08571a3aa81c0
 
 build:
-  number: 0
+  number: 1
   # no s390x support
   # spacy 3.3.1 isn't compatible with python 3.11. Only `spacy >=3.4.2` has that support, see https://github.com/explosion/spaCy/issues/11664#issuecomment-1285770573
   skip: True  # [py<36 or py>=311 or (linux and s390x)]
