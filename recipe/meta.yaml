@@ -12,7 +12,8 @@ source:
 build:
   number: 0
   # no s390x support
-  skip: True  # [py<36 or (linux and s390x)]
+  # spacy 3.3.1 isn't compatible with python 3.11. Only `spacy >=3.4.2` has that support, see https://github.com/explosion/spaCy/issues/11664#issuecomment-1285770573
+  skip: True  # [py<36 or py>311 or (linux and s390x)]
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
   entry_points:
     - spacy = spacy.cli:setup_cli
