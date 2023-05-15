@@ -1,5 +1,5 @@
 {% set name = "spacy" %}
-{% set version = "3.5.2" %}
+{% set version = "3.5.3" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 22c1ffaab285b7477003d4b5b038414cc32468a690d479015b9a698c531c813b
+  sha256: 35971d6721576538d6c423c66a09ce00bf66e10e40726a57b7a81993180c248c
 
 build:
   number: 0
@@ -54,7 +54,8 @@ requirements:
     - tqdm >=4.38.0,<5.0.0
     - {{ pin_compatible('numpy') }}
     - requests >=2.13.0,<3.0.0
-    - pydantic >=1.7.4,!=1.8,!=1.8.1,<1.11.0
+    # Exclude pydantic 1.8.2 due to issues with python 3.11
+    - pydantic >=1.7.4,!=1.8,!=1.8.1,!=1.8.2,<1.11.0
     - jinja2
     - langcodes >=3.2.0,<4.0.0
     # Official Python utilities
