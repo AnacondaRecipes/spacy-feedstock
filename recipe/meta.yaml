@@ -74,7 +74,9 @@ test:
     - spacy
   commands:
     - pip check
-    - python -m pytest --tb=native --pyargs {{ name }}
+    # Skip test_find_available_port on osx-arm64 because of 'ValueError: [E1050] Port 5000 is already in use.'
+    - python -m pytest --tb=native --pyargs {{ name }} -k "not test_find_available_port"  # [osx and arm64]
+    - python -m pytest --tb=native --pyargs {{ name }}  # [not (osx and arm64)]
 
 about:
   home: https://spacy.io/
