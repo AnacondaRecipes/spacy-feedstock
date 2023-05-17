@@ -45,9 +45,7 @@ requirements:
     - catalogue >=2.0.6,<2.1.0
     - spacy-loggers >=1.0.0,<2.0.0
     # Exclude typer with unpinned click (>=0.3.2)
-    - typer >=0.3.2,<0.5.0
-    # Exclude newer click due to typer issues
-    - click <8.1.0
+    - typer >=0.3.0,<0.8.0
     - pathy >=0.10.0
     - smart_open >=5.2.1,<7.0.0
     # Third-party dependencies
