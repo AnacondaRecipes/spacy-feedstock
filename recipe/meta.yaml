@@ -52,7 +52,7 @@ requirements:
     - {{ pin_compatible('numpy') }}
     - requests >=2.13.0,<3.0.0
     # Exclude pydantic 1.8.2 due to issues with python 3.11
-    - pydantic >=1.7.4,!=1.8,!=1.8.1,!=1.8.2,<1.11.0
+    - pydantic >=1.7.4,!=1.8,!=1.8.1,!=1.8.2,<1.10.0
     - jinja2
     - langcodes >=3.2.0,<4.0.0
     # Official Python utilities
