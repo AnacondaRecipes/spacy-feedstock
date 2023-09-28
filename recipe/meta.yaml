@@ -10,7 +10,7 @@ source:
   sha256: 35971d6721576538d6c423c66a09ce00bf66e10e40726a57b7a81993180c248c
 
 build:
-  number: 0
+  number: 1
   # no s390x support
   skip: True  # [py<36 or (linux and s390x)]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vvv
@@ -23,7 +23,7 @@ requirements:
   host:
     - python
     - cymem 2.0.6
-    - cython 0.29.32
+    - cython 0.29
     - murmurhash 1.0.7
     - numpy {{ numpy }}
     - pathy 0.10.1
