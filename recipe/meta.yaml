@@ -31,10 +31,10 @@ requirements:
     - setuptools
     - wheel
     - cython >=0.25,<3.0
-    - murmurhash 1.0.7
-    - cymem 2.0.6
-    - preshed 3.0.6
-    - thinc 8.1.10
+    - murmurhash
+    - cymem
+    - preshed
+    - thinc
   run:
     - python
     # Spacy libraries
@@ -48,7 +48,7 @@ requirements:
     - catalogue >=2.0.6,<2.1.0
     - spacy-loggers >=1.0.0,<2.0.0
     - typer >=0.3.2,<0.10.0
-    - weasel >=0.1.0,<0.4.0  
+    - weasel >=0.1.0,<0.4.0
     # Third-party dependencies
     - {{ pin_compatible('numpy') }}
     - smart_open >=5.2.1,<7.0.0

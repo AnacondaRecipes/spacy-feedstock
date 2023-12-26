@@ -2,3 +2,9 @@ aggregate_branch: 3.12
 
 channels:
     - https://staging.continuum.io/prefect/fs/weasel-feedstock/pr1/a9226b3
+    # for srsly 2.4.8:
+    - https://staging.continuum.io/prefect/fs/srsly-feedstock/pr8/ce69f6c
+    # for thinc 8.2.2
+    - https://staging.continuum.io/prefect/fs/thinc-feedstock/pr15/5f3a8ff
+    # for catalogue 2.0.10:
+    - https://staging.continuum.io/prefect/fs/catalogue-feedstock/pr4/58d7da2
