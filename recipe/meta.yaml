@@ -1,5 +1,5 @@
 {% set name = "spacy" %}
-{% set version = "3.5.3" %}
+{% set version = "3.7.2" %}
 
 package:
   name: {{ name }}
@@ -7,31 +7,34 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 35971d6721576538d6c423c66a09ce00bf66e10e40726a57b7a81993180c248c
+  sha256: cedf4927bf0d3fec773a6ce48d5d2c91bdb02fed3c7d5ec07bdb873f1126f1a0
+  patches:
+    - patches/0001-skip-beam-density-test.patch
 
 build:
   number: 0
   # no s390x support
-  skip: True  # [py<36 or (linux and s390x)]
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vvv
+  skip: True  # [py<36 or s390x]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   entry_points:
     - spacy = spacy.cli:setup_cli
 
 requirements:
   build:
     - {{ compiler('cxx') }}
+    - patch       # [not win]
+    - m2-patch    # [win]
   host:
-    - python
-    - cymem 2.0.6
-    - cython 0.29.32
-    - murmurhash 1.0.7
-    - numpy {{ numpy }}
-    - pathy 0.10.1
     - pip
-    - preshed 3.0.6
+    - python
+    - numpy {{ numpy }}
     - setuptools
-    - thinc 8.1.10
     - wheel
+    - cython >=0.25,<3.0
+    - murmurhash >=0.28.0,<1.1.0
+    - cymem >=2.0.2,<2.1.0
+    - preshed >=3.0.2,<3.1.0
+    - thinc >=8.1.8,<8.3.0
   run:
     - python
     # Spacy libraries
@@ -39,27 +42,28 @@ requirements:
     - murmurhash >=0.28.0,<1.1.0
     - cymem >=2.0.2,<2.1.0
     - preshed >=3.0.2,<3.1.0
-    - thinc >=8.1.8,<8.2.0
+    - thinc >=8.1.8,<8.3.0
     - wasabi >=0.9.1,<1.2.0
     - srsly >=2.4.3,<3.0.0
     - catalogue >=2.0.6,<2.1.0
     - spacy-loggers >=1.0.0,<2.0.0
-    # Exclude typer with unpinned click (>=0.3.2)
-    - typer >=0.3.0,<0.8.0
-    - pathy >=0.10.0
-    - smart_open >=5.2.1,<7.0.0
+    - typer >=0.3.0,<0.10.0
+    - weasel >=0.1.0,<0.4.0
     # Third-party dependencies
-    - tqdm >=4.38.0,<5.0.0
     - {{ pin_compatible('numpy') }}
+    - smart_open >=5.2.1,<7.0.0
+    - tqdm >=4.38.0,<5.0.0
     - requests >=2.13.0,<3.0.0
     # Exclude pydantic 1.8.2 due to issues with python 3.11
-    - pydantic >=1.7.4,!=1.8,!=1.8.1,!=1.8.2,<1.11.0
+    - pydantic >=1.7.4,!=1.8,!=1.8.1,!=1.8.2,<3.0.0
     - jinja2
     - langcodes >=3.2.0,<4.0.0
     # Official Python utilities
     - setuptools
     - packaging >=20.0
     - typing_extensions >=3.7.4.1,<4.5.0  # [py<38]
+  run_constrained:
+    - spacy-transformers >=1.1.2,<1.4.0
 
 test:
   requires:
@@ -70,11 +74,14 @@ test:
     - hypothesis
   imports:
     - spacy
+  source_files:
+    # for pytest markers
+    - setup.cfg
   commands:
     - pip check
     # Skip test_find_available_port on osx-arm64 because of 'ValueError: [E1050] Port 5000 is already in use.'
-    - python -m pytest --tb=native --pyargs {{ name }} -k "not test_find_available_port"  # [osx and arm64]
-    - python -m pytest --tb=native --pyargs {{ name }}  # [not (osx and arm64)]
+    - python -m pytest --tb=native --pyargs {{ name }} -k "not test_find_available_port"  # [osx]
+    - python -m pytest --tb=native --pyargs {{ name }}  # [not osx]
 
 about:
   home: https://spacy.io/
