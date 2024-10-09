@@ -1,1 +1,3 @@
-aggregate_branch: 3.12
+channels:
+  - https://staging.continuum.io/prefect/fs/cython-blis-feedstock/pr6/ff3408c
+  - https://staging.continuum.io/prefect/fs/thinc-feedstock/pr17/10d277f
