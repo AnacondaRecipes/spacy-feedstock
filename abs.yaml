@@ -1,3 +1,4 @@
 channels:
   - https://staging.continuum.io/prefect/fs/cython-blis-feedstock/pr6/a90ed26
   - https://staging.continuum.io/prefect/fs/thinc-feedstock/pr17/1c1b99a
+  - https://staging.continuum.io/prefect/fs/cython-feedstock/pr22/595cc65
