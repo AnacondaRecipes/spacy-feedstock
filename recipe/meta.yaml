@@ -1,5 +1,5 @@
 {% set name = "spacy" %}
-{% set version = "3.8.7" %}
+{% set version = "3.8.11" %}
 
 package:
   name: {{ name }}
@@ -7,17 +7,18 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 700fd174c6c552276be142c48e70bb53cae24c4dd86003c4432af9cb93e4c908
+  sha256: 54e1e87b74a2f9ea807ffd606166bf29ac45e2bd81ff7f608eadc7b05787d90d
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - spacy = spacy.cli:setup_cli
-  skip: True  # [py<39 or py>313]
+  skip: True  # [py<39 or py>315]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
   host:
     - pip
@@ -41,7 +42,7 @@ requirements:
     - wasabi >=0.9.1,<1.2.0
     - srsly >=2.4.3,<3.0.0
     - catalogue >=2.0.6,<2.1.0
-    - weasel >=0.1.0,<0.5.0
+    - weasel >=0.4.2,<0.5.0
     - typer >=0.3.0,<1.0.0
     - tqdm >=4.38.0,<5.0.0
     - numpy >=1.15.0  # [py<39]
@@ -51,10 +52,9 @@ requirements:
     - jinja2
     - setuptools
     - packaging >=20.0
-    - langcodes >=3.2.0,<4.0.0
   run_constrained:
     # lookups
-    -  spacy_lookups_data>=1.0.3,<1.1.0
+    - spacy_lookups_data>=1.0.3,<1.1.0
     # transformers
     - spacy-transformers >=1.1.2,<1.4.0
     # apple
@@ -125,7 +125,7 @@ test:
     - spacy.vectors
   commands:
     - pip check
-    - python -m pytest --tb=native --pyargs spacy
+    - python -m pytest --tb=native --pyargs spacy {{ deselect_tests }}
   requires:
     - pip
     - pytest
