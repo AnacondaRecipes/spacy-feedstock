@@ -1,36 +1,35 @@
 {% set name = "spacy" %}
-{% set version = "3.8.11" %}
+{% set version = "3.8.14" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 54e1e87b74a2f9ea807ffd606166bf29ac45e2bd81ff7f608eadc7b05787d90d
+  url: https://github.com/explosion/spaCy/archive/refs/tags/release-v{{ version }}.tar.gz
+  sha256: ad0ea4e15153de6703a1a77f22c34bdbf105b9362ccde4f4789e02dc9abcb538
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - spacy = spacy.cli:setup_cli
-  skip: True  # [py<39 or py>315]
+  skip: True  # [py<39 or py>314]
 
 requirements:
   build:
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
   host:
-    - pip
     - python
-    - wheel
+    - pip
     - setuptools
     - cython >=3.0,<4.0
     - cymem >=2.0.2,<2.1.0
     - preshed >=3.0.2,<3.1.0
     - murmurhash >=0.28.0,<1.1.0
-    - thinc >=8.3.4,<8.4.0
-    - numpy >=2.0.0,<3.0.0
+    - thinc >=8.3.12,<8.4.0
+    - numpy {{ numpy }}
   run:
     - python
     - spacy-legacy >=3.0.11,<3.1.0
@@ -38,25 +37,29 @@ requirements:
     - murmurhash >=0.28.0,<1.1.0
     - cymem >=2.0.2,<2.1.0
     - preshed >=3.0.2,<3.1.0
-    - thinc >=8.3.4,<8.4.0
+    - thinc >=8.3.12,<8.4.0
     - wasabi >=0.9.1,<1.2.0
-    - srsly >=2.4.3,<3.0.0
+    - srsly >=2.5.3,<3.0.0
     - catalogue >=2.0.6,<2.1.0
-    - weasel >=0.4.2,<0.5.0
+    - weasel >=1.0.0,<2.0.0
+    - confection >=1.3.2,<2.0.0
     - typer >=0.3.0,<1.0.0
     - tqdm >=4.38.0,<5.0.0
-    - numpy >=1.15.0  # [py<39]
-    - numpy >=1.19.0  # [py>=39]
+    - numpy {{ numpy }}
     - requests >=2.13.0,<3.0.0
-    - pydantic >=1.7.4,!=1.8,!=1.8.1,<3.0.0
+    - pydantic >=2.0.0,<3.0.0
     - jinja2
     - setuptools
     - packaging >=20.0
   run_constrained:
     # lookups
-    - spacy_lookups_data>=1.0.3,<1.1.0
+    - spacy_lookups_data >=1.0.3,<1.1.0
     # transformers
     - spacy-transformers >=1.1.2,<1.4.0
+    #  cuda
+    - cupy >=5.0.0b4,<13.0.0
+    # cuda-autodetect
+    - cupy-wheel>=11.0.0,<13.0.0
     # apple
     - thinc-apple-ops >=1.0.0,<2.0.0
     # Language tokenizers with external dependencies
@@ -68,9 +71,12 @@ requirements:
     # th
     - pythainlp >=2.0
 
+{% set deselect_tests = "" %}
 # AssertionError: Registry 'loggers' missing entries: spacy.CupyLogger.v1, spacy.ChainLogger.v1, spacy.LookupLogger.v1, spacy.PyTorchLogger.v1, spacy.WandbLogger.v5, spacy.ClearMLLogger.v2, spacy.MLflowLogger.v2
 # assert not {'spacy.ChainLogger.v1', 'spacy.ClearMLLogger.v2', 'spacy.CupyLogger.v1', 'spacy.LookupLogger.v1', 'spacy.MLflowLogger.v2', 'spacy.PyTorchLogger.v1', ...}
-{% set deselect_tests = " --deselect=tests/test_registry_population.py::test_registry_entries" %}
+{% set deselect_tests = deselect_tests + " --deselect=tests/test_registry_population.py::test_registry_entries" %}
+# AssertionError: confection has different version in setup.cfg and in requirements.txt
+{% set deselect_tests = deselect_tests + " --deselect=tests/package/test_requirements.py::test_build_dependencies" %}
 
 test:
   source_files:
@@ -128,10 +134,10 @@ test:
     - python -m pytest --tb=native --pyargs spacy {{ deselect_tests }}
   requires:
     - pip
-    - pytest
-    - pytest-timeout
+    - pytest >=5.2.0,!=7.1.0
+    - pytest-timeout >=1.3.0,<2.0.0
     - mock
-    - hypothesis
+    - hypothesis >=3.27.0,<7.0.0
 
 about:
   home: https://spacy.io
