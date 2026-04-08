@@ -1,0 +1,28 @@
+From 0f55c79257025df67749bf18e704ff4632861c95 Mon Sep 17 00:00:00 2001
+From: Mikolaj Gralczyk <mgralczyk@anaconda.com>
+Date: Wed, 8 Apr 2026 15:09:47 +0200
+Subject: [PATCH] Ignore deprecation warnings in tests
+
+Python 3.14+ deprecates asyncio.iscoroutinefunction (removed in 3.16);
+callers still use it until migrated to inspect.iscoroutinefunction.
+---
+ setup.cfg | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/setup.cfg b/setup.cfg
+index 7f9b200ca..08f94d689 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -139,6 +139,9 @@ markers =
+ filterwarnings =
+     error
+     ignore:Core Pydantic V1:UserWarning:pydantic
++    # Python 3.14+ deprecates asyncio.iscoroutinefunction (removed in 3.16); callers
++    # still use it until migrated to inspect.iscoroutinefunction.
++    ignore:.*asyncio\.iscoroutinefunction.*:DeprecationWarning
+ 
+ [mypy]
+ ignore_missing_imports = True
+-- 
+2.50.1 (Apple Git-155)
+
