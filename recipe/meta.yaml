@@ -138,8 +138,10 @@ test:
     - pip
     - pytest >=5.2.0,!=7.1.0
     - pytest-timeout >=1.3.0,<2.0.0
-    - mock
     - hypothesis >=3.27.0,<7.0.0
+    # mock is constrained to >=2.0.0,<3.0.0 in requirements.txt, but no such
+    # versions available in main. Version 4.0.x works just fine.
+    - mock
 
 about:
   home: https://spacy.io
