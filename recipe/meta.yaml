@@ -12,7 +12,7 @@ source:
     - patches/0001-Ignore-deprecation-warnings-in-tests.patch # [py>=314]
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - spacy = spacy.cli:setup_cli
@@ -57,8 +57,8 @@ requirements:
   run_constrained:
     # lookups
     - spacy_lookups_data >=1.0.3,<1.1.0
-    # transformers
-    - spacy-transformers >=1.1.2,<1.4.0
+    # Upstream setup.cfg still has <1.4.0; allow 1.4.x so spacy-transformers 1.4.0 can install.
+    - spacy-transformers >=1.1.2,<1.5.0
     #  cuda
     - cupy >=5.0.0b4,<13.0.0
     # cuda-autodetect
@@ -151,7 +151,7 @@ about:
   license_file: LICENSE
   summary: Industrial-strength Natural Language Processing (NLP) in Python
   description: |
-    spaCy is a library for advanced Natural Language Processing in Python and Cython. 
+    spaCy is a library for advanced Natural Language Processing in Python and Cython.
     It's built on the very latest research, and was designed from day one to be used in real products.
   doc_url: https://spacy.io
   dev_url: https://github.com/explosion/spaCy
@@ -164,4 +164,4 @@ extra:
     - adrianeboyd
   skip-lints:
     - cython_needs_compiler
-    - python_build_tool_in_run
+
