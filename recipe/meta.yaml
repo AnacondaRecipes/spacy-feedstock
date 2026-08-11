@@ -54,7 +54,8 @@ requirements:
     - requests >=2.13.0,<3.0.0
     - pydantic >=2.0.0,<3.0.0
     - jinja2
-    - setuptools
+    # upstream requires setuptools at runtime
+    - setuptools  # analint: python_build_tools_in_host,python_build_tool_in_run
     - packaging >=20.0
   run_constrained:
     # lookups
