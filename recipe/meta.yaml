@@ -1,5 +1,5 @@
 {% set name = "spacy" %}
-{% set version = "3.8.14" %}
+{% set version = "3.8.15" %}
 
 package:
   name: {{ name }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://github.com/explosion/spaCy/archive/refs/tags/release-v{{ version }}.tar.gz
-  sha256: ad0ea4e15153de6703a1a77f22c34bdbf105b9362ccde4f4789e02dc9abcb538
+  sha256: 07d237a3de7197b668bf953f3d8c001ece89f003356f8104322e7d2b7679906b
   patches:
     - patches/0001-Ignore-deprecation-warnings-in-tests.patch # [py>=314]
 
 build:
-  number: 1
+  number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - spacy = spacy.cli:setup_cli
@@ -46,6 +46,8 @@ requirements:
     - weasel >=1.0.0,<2.0.0
     - confection >=1.3.2,<2.0.0
     - typer >=0.3.0,<1.0.0
+    # typer>=0.20 no longer pulls click; spaCy imports click directly.
+    - click >=8.2.1,<9.0.0
     - tqdm >=4.38.0,<5.0.0
     - numpy >=1.15.0  # [py<39]
     - numpy >=1.19.0  # [py>=39]
